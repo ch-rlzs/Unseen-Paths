@@ -10,21 +10,27 @@ dark = 0
 light = 0
 Weapon = None
 name = ""
+hfing = 0
+
+#game=0|TTC=1|PATH=2|FATES=3|WEAPON=4
+
 
 def save_game():
-    global dark, light, Weapon, name
+    global dark, light, Weapon, name, hfing
     save_data = {
         "dark": dark,
         "light": light,
         "weapon": Weapon,
-        "name": name
+        "name": name,
+        "hfing": hfing,
+    
     }
     with open("save_data.json", "w") as save_file:
         json.dump(save_data, save_file)
     print_slow("Game saved successfully!\n")
 
 def load_game():
-    global dark, light, Weapon, name
+    global dark, light, Weapon, name, hfing
     if os.path.exists("save_data.json"):
         with open("save_data.json", "r") as save_file:
             save_data = json.load(save_file)
@@ -32,7 +38,26 @@ def load_game():
         light = save_data.get("light", 0)
         Weapon = save_data.get("weapon", None)
         name = save_data.get("name", "")
+        hfing = save_data.get("hfing", 0)
+        
         print_slow("Game loaded successfully!\n")
+    if hfing == 0:
+        game()
+    if hfing == 1:
+        TTC()
+    if hfing == 2:
+        choosepath()
+    if hfing == 3:
+        fatesdivide()
+    if hfing == 4:
+        weaponselect()
+
+
+
+
+    
+    
+    
     else:
         print_slow("No save file found. Starting a new game.\n")
 
@@ -43,7 +68,7 @@ def print_slow(text):
         time.sleep(0.03)
 
 def dataload():
-    global dark, light, Weapon, name
+    global dark, light, Weapon, name, hfing
 
     # Load save data if available
     load_game()
@@ -53,18 +78,9 @@ def dataload():
     light = light if 'light' in globals() else 0
     Weapon = Weapon if 'Weapon' in globals() else None
     name = name if 'name' in globals() else ""
-
+    hfing = hfing if ', hfing' in globals() else 0
     main()  # Start the game
 
-def datasave():
-    global dark, light, Weapon
-
-    with open('data.txt', 'w') as f:
-        f.write(f"{light}\n")
-        f.write(f"{dark}\n")
-        f.write(f"{Weapon}\n")
-
-# Rest of the game logic
 
 def game():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -138,7 +154,7 @@ def choosepath():
         return
 
     save_game()  # Save progress after choosing a path
-    datasave()
+    
     fatesdivide()
 
 def fatesdivide():
