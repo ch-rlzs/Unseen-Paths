@@ -119,6 +119,7 @@ def game():
     time.sleep(5)
     print_slow("\nYour journey begins now.\n")
     time.sleep(3)
+    hfing = 1
     TTC()
 
 def TTC():
@@ -136,7 +137,7 @@ def TTC():
     time.sleep(4)
     print_slow('The light may blind, and the darkness may reveal.\n')
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the screen
-
+    hfing = 2
     choosepath()
 
 def choosepath():
@@ -154,7 +155,7 @@ def choosepath():
         return
 
     save_game()  # Save progress after choosing a path
-    
+    hfing = 3
     fatesdivide()
 
 def fatesdivide():
@@ -174,7 +175,7 @@ def fatesdivide():
     print_slow('Your next choice has come so swiftly.\n')
     print_slow('Many others haven’t even dared come so far.\n')
     print_slow('Your choice is upon which weapon you seek.\n')
-
+    hfing = 4
     weaponselect()
 
 def weaponselect():
