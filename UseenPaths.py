@@ -4,7 +4,7 @@ import json
 import sys
 from tkinter import *
 import tkinter as tk
-
+import sys
 # Global variables
 dark = 0
 light = 0
@@ -14,8 +14,25 @@ hfing = 0
 
 #game=0|TTC=1|PATH=2|FATES=3|WEAPON=4
 
-
-def save_game():
+def reset():
+    dark = 0
+    light = 0
+    Weapon = None
+    name = ""
+    hfing = 0
+    save_data = {
+        "dark": dark,
+        "light": light,
+        "weapon": Weapon,
+        "name": name,
+        "hfing": hfing,
+    
+    }
+    with open("save_data.json", "w") as save_file:
+        json.dump(save_data, save_file)
+    print_slow("Game reset successfully!\n")
+    sys.exit()
+def savegame():
     global dark, light, Weapon, name, hfing
     save_data = {
         "dark": dark,
@@ -39,25 +56,12 @@ def load_game():
         Weapon = save_data.get("weapon", None)
         name = save_data.get("name", "")
         hfing = save_data.get("hfing", 0)
+        print(dark, light, Weapon, name, hfing)
+
+    if hfing >=1:  
+        print_slow("Game loaded successfully!\n\n")
         
-        print_slow("Game loaded successfully!\n")
-    if hfing == 0:
         main()
-    if hfing == 1:
-        TTC()
-    if hfing == 2:
-        choosepath()
-    if hfing == 3:
-        fatesdivide()
-    if hfing == 4:
-        weaponselect()
-
-
-
-
-    
-    
-    
     else:
         print_slow("No save file found. Starting a new game.\n")
 
@@ -83,6 +87,8 @@ def dataload():
 
 
 def game():
+    global hfing
+
     os.system('cls' if os.name == 'nt' else 'clear')
     print_slow('Your story awaits...\n')
     time.sleep(1)
@@ -120,9 +126,12 @@ def game():
     print_slow("\nYour journey begins now.\n")
     time.sleep(3)
     hfing = 1
+    savegame()
     TTC()
 
 def TTC():
+    global hfing 
+
     print_slow('The choice lies before you, traveler.\n')
     time.sleep(2)
     print_slow('Two paths, two fates.\n')
@@ -138,10 +147,11 @@ def TTC():
     print_slow('The light may blind, and the darkness may reveal.\n')
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the screen
     hfing = 2
+    savegame()
     choosepath()
 
 def choosepath():
-    global dark, light
+    global dark, light, hfing
 
     path_choice = input("Choose your path: Light or Darkness? > ").lower()
 
@@ -150,16 +160,17 @@ def choosepath():
     elif path_choice == 'darkness':
         dark += 1
     else:
-        print_slow("\nThe Whisper: 'This is not the time for hesitation, traveler. Choose wisely...'\n")
+        print_slow("\nThis is not the time for hesitation, traveler. Choose wisely...'\n")
         choosepath()
         return
 
-    save_game()  # Save progress after choosing a path
+     
     hfing = 3
+    savegame()
     fatesdivide()
 
 def fatesdivide():
-    global dark, light, Weapon
+    global dark, light, Weapon, hfing
 
     print_slow('You have made a valiant choice\n')
     time.sleep(2)
@@ -216,7 +227,7 @@ def lightnamecreate():
     while len(name) < 3:
         name = input('--> ')
 
-    save_game()  # Save progress after weapon selection
+    savegame()  # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
 
 def darknamecreate():
@@ -237,27 +248,130 @@ def darknamecreate():
     while len(name) < 3:
         name = input('--> ')
 
-    save_game()  # Save progress after weapon selection
+    savegame()  # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
     time.sleep(2)
+def journeybegins():
+    print_slow('Okay pal slow it down im not ready yet')
+    mainchoose()
+
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the screen
+    global hfing, light, dark
+    if hfing >=1:
+        print_slow('\nThe path lies before you...\n1> Enter back into the shadows(continue)\n2> Turn back while you still can\n3> Rebirth yourself and start a new life (reset)')
 
-    print_slow('\nThe path lies before you...\n1> Step into the unknown\n2> Turn back while you still can\n')
+        menu = input("\nWhat will you choose? > ").lower()
 
-    menu = input("\nWhat will you choose? > ").lower()
+        if menu == '1' or menu == 'step into the unknown':
+            if hfing == 0:
+                game()
+            if hfing == 1:  
+                TTC()
+            if hfing == 2:
+                choosepath()
+            if hfing == 3:
+                fatesdivide()
+            if hfing == 4:
+                weaponselect()
+        elif menu == '2' or menu == 'turn back':
+            print_slow("\nThe shadows linger, waiting... perhaps another time.\n")
+        elif menu =='3' or menu == 'reset':
+            reset()
+        elif menu =='cheat':
+            print_slow('\nSo you have resort to desperate measures to progress... Only kidding pal heres your options of cheats\n')
+            time.sleep(2)
+            print_slow('\nYou have 2 options. Technically three but two of them are one or the other\n')
+            time.sleep(2)
+            print_slow('\n1> Load from a certain point (each chapter)\n2> Force light or dark paths (Auto sets hfing past the choosing a path)\n3> Exit to menu')
+            cht = input('Your choice here> ')
+            if cht == '1':
+                hch = input('1> Start of game(0)\n2> TTC(1)\n3>CHOOSE(2)\n4> FATES(3)\n5> Weapon(4)\n--> ')
+                if hch == '0':
+                    hfing = 0
+                if hch == '1':
+                    hfing = 1
+                
+                if hch == '2':
+                    hfing = 2
+                
 
-    if menu == '1' or menu == 'step into the unknown':
-        game()
-    elif menu == '2' or menu == 'turn back':
-        print_slow("\nThe shadows linger, waiting... perhaps another time.\n")
-    elif menu == "load":
-        load_game()
-        main()
-    else:
-        print_slow("\nThat is not a choice, traveler. Decide wisely.\n")
-        main()  # Recursively call main to restart the menu if input is invalid
+                if hch == '3':
+                    hfing = 3
+                if hch == '4':
+                    hfing = 4
+            if cht == '2':
+                lod = ('Light or dark?(L/D > ').lower()
+                if lod == 'l':
+                    dark = 0
+                    light += 1
+                if lod == 'd':
+                    light = 0
+                    dark += 1
+                
 
+            if cht == '3':
+                main()
+                
+            
+                       
+
+
+            
+        else:
+            print_slow("\nThat is not a choice, traveler. Decide wisely.\n")
+            main()  # Recursively call main to restart the menu if input is invalid
+        
+    if hfing ==0:
+        print_slow('\nThe path lies before you...\n1> Step into the unknown\n2> Turn back while you still can\n')
+
+        menu = input("\nWhat will you choose? > ").lower()
+        if menu == '1' or menu == 'step into the unknown':
+            game()
+        
+        elif menu == '2' or menu == 'turn back':
+            print_slow("\nThe shadows linger, waiting... perhaps another time.\n")
+
+        elif menu =='cheat':
+            print_slow('\nSo you have resort to desperate measures to progress... Only kidding pal heres your options of cheats\n')
+            time.sleep(2)
+            print_slow('\nYou have 2 options. Technically three but two of them are one or the other\n')
+            time.sleep(2)
+            print_slow('\n1> Load from a certain point (each chapter)\n2> Force light or dark paths (Auto sets hfing past the choosing a path)\n3> Exit to menu')
+            cht = input('\nYour choice here> ')
+            if cht == '1':
+                hch = input('1> Start of game\n2> TTC\n3>CHOOSE\n4> FATES\n5> Weapon)\n--> ')
+                if hch == '1':
+                    hfing = 0
+                if hch == '2':
+                    hfing = 1
+                
+                if hch == '3':
+                    hfing = 2
+                
+
+                if hch == '4':
+                    hfing = 3
+                if hch == '5':
+                    hfing = 4
+            if cht == '2':
+                lod = ('Light or dark?(L/D > ').lower()
+                if lod == 'l':
+                    dark = 0
+                    light += 1
+                if lod == 'd':
+                    light = 0
+                    dark += 1
+                
+
+            if cht == '3':
+                main()
+
+
+        else:
+            print_slow("\nThat is not a choice, traveler. Decide wisely.\n")
+            main()  # Recursively call main to restart the menu if input is invalid
+
+            
 # Start the game
 dataload()
