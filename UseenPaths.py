@@ -42,7 +42,7 @@ def load_game():
         
         print_slow("Game loaded successfully!\n")
     if hfing == 0:
-        game()
+        main()
     if hfing == 1:
         TTC()
     if hfing == 2:
