@@ -12,7 +12,7 @@ Weapon = None
 name = ""
 hfing = 0
 
-#game=0|TTC=1|PATH=2|FATES=3|WEAPON=4
+#game=0|TTC=1|PATH=2|FATES=3|WEAPON=4|JOURNEY=5
 
 def reset():
     dark = 0
@@ -56,7 +56,7 @@ def load_game():
         Weapon = save_data.get("weapon", None)
         name = save_data.get("name", "")
         hfing = save_data.get("hfing", 0)
-        print(dark, light, Weapon, name, hfing)
+        #print(dark, light, Weapon, name, hfing)
 
     if hfing >=1:  
         print_slow("Game loaded successfully!\n\n")
@@ -103,7 +103,7 @@ def game():
     print_slow("\nIn the silence, there is a faint presence... something lurking just out of sight.\n")
     time.sleep(3)
     os.system('cls' if os.name == 'nt' else 'clear')
-    print_slow("\nYou feel it now, traveler.\n")
+    print_slow("\nDo You feel it now, traveler.\n")
     time.sleep(2)
     print_slow("I have been waiting for you.\n")
     time.sleep(3)
@@ -157,8 +157,10 @@ def choosepath():
 
     if path_choice == 'light':
         light += 1
+        dark = 0
     elif path_choice == 'darkness':
         dark += 1
+        light = 0
     else:
         print_slow("\nThis is not the time for hesitation, traveler. Choose wisely...'\n")
         choosepath()
@@ -196,21 +198,21 @@ def weaponselect():
         print_slow('Upon being a dark warrior these are your weapon choices..\n')
         time.sleep(2)
         print_slow('1>Void Reaver:\nDamage> 12\nSpeed> 7\n\n')
-        print_slow('2>Nightfall Dagger:\nDamage> 11\nSpeed> 8\n\n')
+        print_slow('2>Nightfall Dagger:\nDamage> 3\nSpeed> 13\n\n')
         print_slow('3>Abyssal Scythe:\nDamage> 17\nSpeed> 4\n\n')
         Weapon = input('Your choice> ')
         darknamecreate()
 
     if light >= 1:
         print_slow('Upon being a light Warrior these are your weapon choices..\n')
-        print_slow('1>Radiant Blade:\nDamage> 14\nSpeed> 11\n\n')
-        print_slow('2>Gleam Spear:\nDamage> 11\nSpeed> 9\n\n')
-        print_slow('3>Aether Bow:\nDamage> 12\nSpeed> 10\n\n')
+        print_slow('1>Radiant Blade:\nDamage> 14\nSpeed> 5\n\n')
+        print_slow('2>Gleam Spear:\nDamage> 11\nSpeed> 4\n\n')
+        print_slow('3>Aether Bow:\nDamage> 12\nSpeed> 10\nRange> 50\n\n')
         Weapon = input('Your choice> ')
         lightnamecreate()
 
 def lightnamecreate():
-    global Weapon
+    global Weapon, hfing
     if Weapon == '1':
         Weapon = 'Radiant Blade'
     elif Weapon == '2':
@@ -221,7 +223,7 @@ def lightnamecreate():
     print_slow("Excellent choice...\n")
     time.sleep(1)
     print_slow('What should I call you traveler? \n')
-    time.sleep(3)
+   
     global name
     name = input('--> ')
     while len(name) < 3:
@@ -229,9 +231,11 @@ def lightnamecreate():
 
     savegame()  # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
-
+    hfing = 5
+    journeybegins()
+   
 def darknamecreate():
-    global Weapon
+    global Weapon, hfing
     if Weapon == '1':
         Weapon = 'Void Reaver'
     elif Weapon == '2':
@@ -242,7 +246,7 @@ def darknamecreate():
     print_slow("Excellent choice...\n")
     time.sleep(1)
     print_slow('What should I call you traveler? \n')
-    time.sleep(3)
+    
     global name
     name = input('--> ')
     while len(name) < 3:
@@ -251,9 +255,43 @@ def darknamecreate():
     savegame()  # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
     time.sleep(2)
+    journeybegins()
+    hfing = 5
 def journeybegins():
-    print_slow('Okay pal slow it down im not ready yet')
-    mainchoose()
+    global dark, light, name, Weapon, hfing
+    print_slow('You venture near your second choice')
+    time.sleep(2)
+    print_slow('This choice may be greater and deeper affecting than your last')
+    time.sleep(2)
+    print_slow('Your choice may be valiant or it maybe dismal....')
+    time.sleep(2)
+    print_slow('So.. What will you choose next....')
+    time.sleep(2)
+    if light >=1:
+        print_slow('Because you chose the path of light\n\n you get two choices..\nOne similar and one different to a darker path')
+        print_slow('\n\n1> Lumina Celestis- The city of heaven light and succsess\n2> Limina- The city between light and dark')
+        chose
+                   
+    #Lumina Celestis
+    #Noctara
+    #Limina
+    print_slow('')
+    
+    print_slow('')
+    
+    print_slow('')
+    
+    print_slow('')
+    
+
+
+
+
+
+
+
+
+    main()
 
 
 def main():
@@ -274,6 +312,8 @@ def main():
                 fatesdivide()
             if hfing == 4:
                 weaponselect()
+            if hfing == 5:
+                journeybegins()
         elif menu == '2' or menu == 'turn back':
             print_slow("\nThe shadows linger, waiting... perhaps another time.\n")
         elif menu =='3' or menu == 'reset':
@@ -343,26 +383,45 @@ def main():
                 hch = input('1> Start of game\n2> TTC\n3>CHOOSE\n4> FATES\n5> Weapon)\n--> ')
                 if hch == '1':
                     hfing = 0
+                    savegame()
+                    main()
+
                 if hch == '2':
                     hfing = 1
-                
+                    savegame()
+                    main()
+
                 if hch == '3':
                     hfing = 2
-                
+                    savegame()
+                    main()
 
                 if hch == '4':
                     hfing = 3
+                    savegame()
+                    main()
+
                 if hch == '5':
                     hfing = 4
+                    savegame()
+                    main()
+
             if cht == '2':
-                lod = ('Light or dark?(L/D > ').lower()
+                lod = input('Light or dark?(L/D > ').lower()
                 if lod == 'l':
+                    hfing = 2
                     dark = 0
                     light += 1
+                    savegame()
+                    main()
+
                 if lod == 'd':
+                    hfing = 2
                     light = 0
                     dark += 1
-                
+                    savegame()
+                    main()
+
 
             if cht == '3':
                 main()
@@ -375,3 +434,4 @@ def main():
             
 # Start the game
 dataload()
+7
