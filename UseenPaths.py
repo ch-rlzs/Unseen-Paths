@@ -1,10 +1,11 @@
+
 import time
 import os
 import json
 import sys
 from tkinter import *
 import tkinter as tk
-import sys
+import sys  
 # Global variables
 dark = 0
 light = 0
@@ -31,7 +32,7 @@ def reset():
     with open("save_data.json", "w") as save_file:
         json.dump(save_data, save_file)
     print_slow("Game reset successfully!\n")
-    sys.exit()
+    load_game()
 def savegame():
     global dark, light, Weapon, name, hfing
     save_data = {
@@ -229,9 +230,10 @@ def lightnamecreate():
     while len(name) < 3:
         name = input('--> ')
 
-    savegame()  # Save progress after weapon selection
+      # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
     hfing = 5
+    savegame()
     journeybegins()
    
 def darknamecreate():
@@ -255,22 +257,37 @@ def darknamecreate():
     savegame()  # Save progress after weapon selection
     print_slow(f'Ah well {name}, Welcome to the world of Nythra\n')
     time.sleep(2)
-    journeybegins()
     hfing = 5
+    savegame()
+    journeybegins()
+    
 def journeybegins():
-    global dark, light, name, Weapon, hfing
-    print_slow('You venture near your second choice')
+    global dark, light, name, Weapon, hfing, city
+    print_slow('You venture near your second choice\n')
     time.sleep(2)
-    print_slow('This choice may be greater and deeper affecting than your last')
+    print_slow('This choice may be greater and deeper affecting than your last\n')
     time.sleep(2)
-    print_slow('Your choice may be valiant or it maybe dismal....')
+    print_slow('Your choice may be valiant or it maybe dismal....\n')
     time.sleep(2)
-    print_slow('So.. What will you choose next....')
+    print_slow('So.. What will you choose next....\n')
     time.sleep(2)
     if light >=1:
-        print_slow('Because you chose the path of light\n\n you get two choices..\nOne similar and one different to a darker path')
-        print_slow('\n\n1> Lumina Celestis- The city of heaven light and succsess\n2> Limina- The city between light and dark')
-        chose
+        print_slow('Because you chose the path of light\n you get two choices..\n One similar and one different to a darker path\n')
+        print_slow('\n\n1> Lumina Celestis- The city of heaven light and succsess\n\n2> Limina- The city between light and dark')
+        choose = input('Which will you choose? > ')
+        if choose == '1':
+            city = 'Lumina_Celestis'
+        if choose == '2':
+            city = 'Limina'
+    if dark >=1:
+        print_slow('Because you chose the path of dark..\n\n you get two choices..\n\nOne similar and one different to a lighter path\n')
+        print_slow('\n\n1> Noctara- A dismal city though vast \n \n2> Limina- The city between light and dark')
+        choose = input('Which will you choose? > ')
+        if choose == '1':
+            city = 'Noctara'
+        if choose == '2':
+            city = 'Limina'
+    
                    
     #Lumina Celestis
     #Noctara
