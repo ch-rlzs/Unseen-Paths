@@ -292,8 +292,7 @@ def journeybegins():
     #Lumina Celestis
     #Noctara
     #Limina
-    print_slow('')
-    
+    print_slow('You have reached the end so far....')
     print_slow('')
     
     print_slow('')
